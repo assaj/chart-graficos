@@ -38,6 +38,9 @@ function criaGrafico(){
             }]
         },
         options: {
+            animation: {
+                duration : 0
+            },
             scales: {
                 yAxes: [{
                     scaleLabel: {
@@ -72,6 +75,12 @@ function add(){
         indicadores.push(time/10);
     }else{
         indicadores.push('');
+    }
+
+    //Se ja tem 100 valores, comeca a discartar os antigos
+    if(time >= 100){
+        indicadores.shift();
+        valores.shift();
     }
     time++;
     chart.update();
