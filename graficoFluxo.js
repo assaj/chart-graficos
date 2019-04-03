@@ -2,6 +2,10 @@ const valores = [];
 const indicadores = [];
 var chart, time = 0; 
 
+// Inicializando array dos indicadores de tempo
+for(let b = 0; b <= 100; b++){
+    indicadores[b] = b/100;
+}
 //Pegando a tag "canvas" do index.html pelo seu id.
 var ctx = document.getElementById('Chart');
 
@@ -9,7 +13,7 @@ criaGrafico();
 
 function criaGrafico(){
 
-    //Passando as configuracoes da biblioteca ao canvas
+    //Craindo o objeto grafico e colocando suas configuracoes
     chart = new Chart(ctx, {
         type: 'line',
         data: {
@@ -18,28 +22,30 @@ function criaGrafico(){
                 label: 'Fluxo',
                 data: valores,
                 fill: false,
-                backgroundColor: [
-                    'rgba(255, 99, 132, 0.2)',
-                    'rgba(54, 162, 235, 0.2)',
-                    'rgba(255, 206, 86, 0.2)',
-                    'rgba(75, 192, 192, 0.2)',
-                    'rgba(153, 102, 255, 0.2)',
-                    'rgba(255, 159, 64, 0.2)'
-                ],
                 borderColor: [
-                    'rgba(255, 99, 132, 1)',
-                    'rgba(54, 162, 235, 1)',
-                    'rgba(255, 206, 86, 1)',
-                    'rgba(75, 192, 192, 1)',
-                    'rgba(153, 102, 255, 1)',
-                    'rgba(255, 159, 64, 1)'
+                    'rgba(255, 99, 132, 1)'
                 ],
-                borderWidth: 3
+                borderWidth: 2
             }]
         },
         options: {
+            tooltips: {
+                callbacks: {
+                    footer: function(tooltipItem, data) {
+                        let ret = [];
+                        tooltipItem.forEach(function(tooltipItem){
+                            ret[0] = data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index];
+                            ret[1] = indicadores[tooltipItem.index];
+                        });
+                        return ret;
+                    },
+                    title: function(tooltipItem, data){
+                        return "Informacoes";
+                    }
+                }
+            },
             animation: {
-                duration : 0
+                duration : 10
             },
             scales: {
                 yAxes: [{
@@ -62,26 +68,18 @@ function criaGrafico(){
 }
 
 //Roda a funcao de atualizacao a cada 10 milissegundos
-setInterval(add, 10);
+//e armazenada para testes no console, remover isso na versao final.
+let testVariable = setInterval(add, 10);
 
 function add(){
     //adiciona valor aleatorio de 0 a 100
     valores.push(Math.floor((Math.random() * 100)));
 
-    //A cada 1 segundo (ou seja, 10 times)
-    // colocaremos um indicador de segundo
-    // time/10;
-    if(time%10 == 0){
-        indicadores.push(time/10);
-    }else{
-        indicadores.push('');
-    }
-
-    //Se ja tem 100 valores, comeca a discartar os antigos
-    if(time >= 100){
-        indicadores.shift();
+    //Se ja tem 100 valores de 10 milissegundos, comeca a descartar os antigos
+    if(time > 100)
         valores.shift();
-    }
+
     time++;
     chart.update();
 }
+
