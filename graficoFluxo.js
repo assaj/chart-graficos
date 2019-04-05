@@ -1,41 +1,40 @@
-const valores = []; 
-const indicadores = [];
-var chart, time = 0; 
+const valoresFluxo = []; 
+const indicadoresFluxo = [];
+var chartFluxo, timeFluxo = 0; 
 
-// Inicializando array dos indicadores de tempo
-for(let b = 0; b <= 100; b++){
-    indicadores[b] = b/100;
+// Inicializando array dos indicadoresFluxo de tempo
+for(let b = 0; b <= 1000; b++){
+    b%100 == 0 ? indicadoresFluxo[b] = b/100 : indicadoresFluxo[b] = b;
 }
 //Pegando a tag "canvas" do index.html pelo seu id.
-var ctx = document.getElementById('Chart');
+var ctx = document.getElementById('ChartFluxo');
 
 criaGrafico();
 
 function criaGrafico(){
 
     //Craindo o objeto grafico e colocando suas configuracoes
-    chart = new Chart(ctx, {
+    chartFluxo = new Chart(ctx, {
         type: 'line',
         data: {
-            labels: indicadores,
+            labels: indicadoresFluxo,
             datasets: [{
-                label: 'Fluxo',
-                data: valores,
+                label: 'fluxo',
+                data: valoresFluxo,
                 fill: false,
                 borderColor: [
                     'rgba(255, 99, 132, 1)'
                 ],
-                borderWidth: 2
+                borderWidth: 1
             }]
         },
         options: {
             tooltips: {
                 callbacks: {
                     footer: function(tooltipItem, data) {
-                        let ret = [];
+                        let ret;
                         tooltipItem.forEach(function(tooltipItem){
-                            ret[0] = data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index];
-                            ret[1] = indicadores[tooltipItem.index];
+                            ret = "tempo: "+indicadoresFluxo[tooltipItem.index];
                         });
                         return ret;
                     },
@@ -51,7 +50,7 @@ function criaGrafico(){
                 yAxes: [{
                     scaleLabel: {
                         display: true,
-                        labelString: 'Valores Randomicos'
+                        labelString: 'valoresFluxo Randomicos'
                     }
                 }],
                 xAxes: [{
@@ -69,17 +68,17 @@ function criaGrafico(){
 
 //Roda a funcao de atualizacao a cada 10 milissegundos
 //e armazenada para testes no console, remover isso na versao final.
-let testVariable = setInterval(add, 10);
+let testVariableFluxo = setInterval(add, 10);
 
 function add(){
     //adiciona valor aleatorio de 0 a 100
-    valores.push(Math.floor((Math.random() * 100)));
+    valoresFluxo.push(Math.floor((Math.random() * 100)));
 
-    //Se ja tem 100 valores de 10 milissegundos, comeca a descartar os antigos
-    if(time > 100)
-        valores.shift();
+    //Se ja tem 1000 valoresFluxo de 10 milissegundos, comeca a descartar os antigos
+    if(timeFluxo > 1000)
+        valoresFluxo.shift();
 
-    time++;
-    chart.update();
+    timeFluxo++;
+    chartFluxo.update();
 }
 
