@@ -51,13 +51,17 @@ function criaGrafico(){
                     scaleLabel: {
                         display: true,
                         labelString: 'valoresFluxo Randomicos'
+                    },ticks : {
+                        min: 0,
+                        max: 10
                     }
                 }],
                 xAxes: [{
                     scaleLabel: {
                         display: true,
                         labelString: 'Tempo'
-                    }
+                    },
+                    
                 }]
             }
         }
