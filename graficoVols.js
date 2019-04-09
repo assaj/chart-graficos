@@ -61,6 +61,9 @@ function criaGrafico(){
                     scaleLabel: {
                         display: true,
                         labelString: 'valoresVols Randomicos'
+                    },ticks : {
+                        min: -3,
+                        max: 3
                     }
                 }],
                 xAxes: [{
