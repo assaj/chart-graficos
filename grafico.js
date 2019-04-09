@@ -1,17 +1,17 @@
 const valoresFluxo = []; 
 const indicadoresFluxo = [];
-var chartFluxo, timeFluxo = 0; 
-
-// Inicializando array dos indicadoresFluxo de tempo
-for(let b = 0; b <= 1000; b++){
-    b%100 == 0 ? indicadoresFluxo[b] = b/100 : indicadoresFluxo[b] = b;
-}
+var chartFluxo, timeFluxo = 0, ctxFluxo; 
 
 const valoresVols = [];
 valoresVols[0] = [];
 valoresVols[1] = [];
 const indicadoresVols = [];
-var chartVols, timeVols = 0; 
+var chartVols, timeVols = 0, ctxVols; 
+
+// Inicializando array dos indicadoresFluxo de tempo
+for(let b = 0; b <= 1000; b++){
+    b%100 == 0 ? indicadoresFluxo[b] = b/100 : indicadoresFluxo[b] = b;
+}
 
 // Inicializando array dos indicadoresVols de tempo
 for(let b = 0; b <= 10; b++){
@@ -174,12 +174,12 @@ function numeroAleatorio(min,max){ // FIX IT
 
 window.onload = function(){
     //Pegando a tag "canvas" do index.html pelo seu id.
-    var ctx = document.getElementById('ChartFluxo');
-    var ctx = document.getElementById('ChartVols');
+    ctxFluxo = document.getElementById('ChartFluxo');
+    ctxVols = document.getElementById('ChartVols');
 
     //cria os dois graficos
-    chartFluxo = new Chart(ctx, fluxoConf);
-    chartVols = new Chart(ctx, volsConf);
+    chartFluxo = new Chart(ctxFluxo, fluxoConf);
+    chartVols = new Chart(ctxVols, volsConf);
 
     //Roda a funcao de atualizacao, em ambos os graficos, com suas respectivas taxas de atualizacao, em milissegundos
     setInterval(fluxoUpdate, 10);
