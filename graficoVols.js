@@ -69,7 +69,7 @@ function criaGrafico(){
                 xAxes: [{
                     scaleLabel: {
                         display: true,
-                        labelString: 'Tempo'
+                        labelString: 'Tempo(S)'
                     }
                 }]
             }
