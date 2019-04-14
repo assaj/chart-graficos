@@ -1,31 +1,31 @@
-const valoresFluxo = []; 
-const indicadoresFluxo = [];
-var chartFluxo, timeFluxo = 0, ctxFluxo; 
+const flowValues = []; 
+const flowIndicators = [];
+var chartFlow, flowTime = 0, flowCtx; 
 
-const valoresVols = [];
-valoresVols[0] = [];
-valoresVols[1] = [];
-const indicadoresVols = [];
-var chartVols, timeVols = 0, ctxVols; 
+const volsValues = [];
+volsValues[0] = [];
+volsValues[1] = [];
+const volsIndicators = [];
+var chartVols, volsTime = 0, volsCtx; 
 
 // Starting Array with Flow indicators
 for(let b = 0; b <= 1000; b++){
-    b%100 == 0 ? indicadoresFluxo[b] = b/100 : indicadoresFluxo[b] = b;
+    b%100 == 0 ? flowIndicators[b] = b/100 : flowIndicators[b] = b;
 }
 
 // Starting Array with Vols indicators
 for(let b = 0; b <= 10; b++){
-    indicadoresVols[b] = b;
+    volsIndicators[b] = b;
 }
 
 // Creating flow graphic configuration
-var fluxoConf = {
+var FlowConf = {
     type: 'line',
     data: {
-        labels: indicadoresFluxo,
+        labels: flowIndicators,
         datasets: [{
             label: 'fluxo',
-            data: valoresFluxo,
+            data: flowValues,
             fill: false,
             borderColor: [
                 'rgba(255, 99, 132, 1)'
@@ -39,7 +39,7 @@ var fluxoConf = {
                 footer: function(tooltipItem, data) {
                     let ret;
                     tooltipItem.forEach(function(tooltipItem){
-                        ret = "tempo: "+indicadoresFluxo[tooltipItem.index];
+                        ret = "tempo: "+flowIndicators[tooltipItem.index];
                     });
                     return ret;
                 },
@@ -55,7 +55,7 @@ var fluxoConf = {
             yAxes: [{
                 scaleLabel: {
                     display: true,
-                    labelString: 'valoresFluxo Randomicos'
+                    labelString: 'ValoresFluxo Randomicos'
                 },ticks : {
                     min: 0,
                     max: 100
@@ -75,10 +75,10 @@ var fluxoConf = {
 var volsConf = {
     type: 'line',
     data: {
-        labels: indicadoresVols,
+        labels: volsIndicators,
         datasets: [{
             label: 'serieTemporal1',
-            data: valoresVols[0],
+            data: volsValues[0],
             fill: false,
             borderColor: [
                 'rgba(0, 0, 132, 1)'
@@ -86,7 +86,7 @@ var volsConf = {
             borderWidth: 2
         },{
             label: 'serieTemporal2',
-            data: valoresVols[1],
+            data: volsValues[1],
             fill: false,
             borderColor: [
                 'rgba(255, 99, 132, 1)'
@@ -100,7 +100,7 @@ var volsConf = {
                 footer: function(tooltipItem, data) {
                     let ret;
                     tooltipItem.forEach(function(tooltipItem){
-                        ret = "tempo: "+indicadoresFluxo[tooltipItem.index];
+                        ret = "tempo: "+flowIndicators[tooltipItem.index];
                     });
                     return ret;
                 },
@@ -133,41 +133,41 @@ var volsConf = {
 }
 
 
-function fluxoUpdate(){
+function flowUpdate(){
     // Adds a random number between 0 and 100
-    valoresFluxo.push(Math.floor((Math.random() * 100)));
+    flowValues.push(Math.floor((Math.random() * 100)));
 
     // discard of old values
     // start at 10 seconds
-    if(timeFluxo > 1000)
-        valoresFluxo.shift();
+    if(flowTime > 1000)
+        flowValues.shift();
 
-    timeFluxo++;
-    chartFluxo.update();
+    flowTime++;
+    chartFlow.update();
 }
 
 function volsUpdate(){
     //Change this.
     //adds a random number between -3 and 3
-    Math.floor((Math.random() * 2) + 1) == 2 ? valoresVols[0].push(Math.floor((Math.random() * 4))) : valoresVols[0].push(Math.floor((Math.random() * 3)*(-1)));
-    Math.floor((Math.random() * 2) + 1) == 2 ? valoresVols[1].push(Math.floor((Math.random() * 4))) : valoresVols[1].push(Math.floor((Math.random() * 3)*(-1)));
+    Math.floor((Math.random() * 2) + 1) == 2 ? volsValues[0].push(Math.floor((Math.random() * 4))) : volsValues[0].push(Math.floor((Math.random() * 3)*(-1)));
+    Math.floor((Math.random() * 2) + 1) == 2 ? volsValues[1].push(Math.floor((Math.random() * 4))) : volsValues[1].push(Math.floor((Math.random() * 3)*(-1)));
 
     // discard of old values
     // start at 10 seconds
-    if(timeVols > 10){
-        valoresVols[1].shift();
-        valoresVols[0].shift();
+    if(volsTime > 10){
+        volsValues[1].shift();
+        volsValues[0].shift();
     }
-    timeVols++;
+    volsTime++;
     chartVols.update();
 }
 
-function numeroAleatorio(min,max){ // FIX IT
+function randomNumber(min,max){ // FIX IT
     let x;
     if(min < 0){
-        let soma = (min *(-1)) + max;
-        soma -= Math.floor((Math.random() * soma + 1));
-        soma > 0 ? x = Math.floor((Math.random() * max + 1)) : x = Math.floor((Math.random() * ((min)*(-1))));
+        let sum = (min *(-1)) + max;
+        sum -= Math.floor((Math.random() * sum + 1));
+        sum > 0 ? x = Math.floor((Math.random() * max + 1)) : x = Math.floor((Math.random() * ((min)*(-1))));
     }else{
         x = Math.floor((Math.random() * max) + min)
     }
@@ -176,15 +176,15 @@ function numeroAleatorio(min,max){ // FIX IT
 
 window.onload = function(){
     // catch tag "canvas" of html file, by ID.
-    ctxFluxo = document.getElementById('ChartFluxo');
-    ctxVols = document.getElementById('ChartVols');
+    flowCtx = document.getElementById('flowChart');
+    volsCtx = document.getElementById('volsChart');
 
     //Create two graphcs
-    chartFluxo = new Chart(ctxFluxo, fluxoConf);
-    chartVols = new Chart(ctxVols, volsConf);
+    chartFlow = new Chart(flowCtx, FlowConf);
+    chartVols = new Chart(volsCtx, volsConf);
 
     // Run the updating function of the two graphcs already created
     // The refresh rate is in milliseconds
-    setInterval(fluxoUpdate, 10);
+    setInterval(flowUpdate, 10);
     setInterval(volsUpdate, 1000);
 }
