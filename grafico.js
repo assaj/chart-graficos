@@ -8,17 +8,17 @@ valoresVols[1] = [];
 const indicadoresVols = [];
 var chartVols, timeVols = 0, ctxVols; 
 
-// Inicializando array dos indicadoresFluxo de tempo
+// Starting Array with Flow indicators
 for(let b = 0; b <= 1000; b++){
     b%100 == 0 ? indicadoresFluxo[b] = b/100 : indicadoresFluxo[b] = b;
 }
 
-// Inicializando array dos indicadoresVols de tempo
+// Starting Array with Vols indicators
 for(let b = 0; b <= 10; b++){
     indicadoresVols[b] = b;
 }
 
-//criando configuracoes do grafico Fluxo
+// Creating flow graphic configuration
 var fluxoConf = {
     type: 'line',
     data: {
@@ -71,7 +71,7 @@ var fluxoConf = {
     }
 }
 
-//criando configuracoes do grafico Vols
+// Creating vols Graphic configuration
 var volsConf = {
     type: 'line',
     data: {
@@ -134,10 +134,11 @@ var volsConf = {
 
 
 function fluxoUpdate(){
-    //adiciona valor aleatorio de 0 a 100
+    // Adds a random number between 0 and 100
     valoresFluxo.push(Math.floor((Math.random() * 100)));
 
-    //Se ja tem 1000 valoresFluxo de 10 milissegundos, comeca a descartar os antigos
+    // discard of old values
+    // start at 10 seconds
     if(timeFluxo > 1000)
         valoresFluxo.shift();
 
@@ -147,11 +148,12 @@ function fluxoUpdate(){
 
 function volsUpdate(){
     //Change this.
-    //adiciona valor aleatorio de -3 a 3
+    //adds a random number between -3 and 3
     Math.floor((Math.random() * 2) + 1) == 2 ? valoresVols[0].push(Math.floor((Math.random() * 4))) : valoresVols[0].push(Math.floor((Math.random() * 3)*(-1)));
     Math.floor((Math.random() * 2) + 1) == 2 ? valoresVols[1].push(Math.floor((Math.random() * 4))) : valoresVols[1].push(Math.floor((Math.random() * 3)*(-1)));
 
-    //Se ja tem 100 valoresVols de 10 milissegundos, comeca a descartar os antigos
+    // discard of old values
+    // start at 10 seconds
     if(timeVols > 10){
         valoresVols[1].shift();
         valoresVols[0].shift();
@@ -173,15 +175,16 @@ function numeroAleatorio(min,max){ // FIX IT
 }
 
 window.onload = function(){
-    //Pegando a tag "canvas" do index.html pelo seu id.
+    // catch tag "canvas" of html file, by ID.
     ctxFluxo = document.getElementById('ChartFluxo');
     ctxVols = document.getElementById('ChartVols');
 
-    //cria os dois graficos
+    //Create two graphcs
     chartFluxo = new Chart(ctxFluxo, fluxoConf);
     chartVols = new Chart(ctxVols, volsConf);
 
-    //Roda a funcao de atualizacao, em ambos os graficos, com suas respectivas taxas de atualizacao, em milissegundos
+    // Run the updating function of the two graphcs already created
+    // The refresh rate is in milliseconds
     setInterval(fluxoUpdate, 10);
     setInterval(volsUpdate, 1000);
 }
