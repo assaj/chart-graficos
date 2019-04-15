@@ -12,6 +12,12 @@ var chartVols
 var volsTime = 0
 var volsCtx
 
+const volsIntervalTime = 1000
+const flowIntervalTime = 20
+const maxVolsGraphicSize = 10
+const maxFlowGraphicSize = 1000
+const maxFlowValue = 100
+
 // Starting Array with Flow indicators
 for (let b = 0; b <= 1000; b++) b % 100 === 0 ? flowIndicators[b] = b / 100 : flowIndicators[b] = b
 
@@ -136,11 +142,11 @@ var volsConf = {
 
 function flowUpdate () {
   // Adds a random number between 0 and 100
-  flowValues.push(Math.floor((Math.random() * 100)))
+  flowValues.push(Math.floor((Math.random() * maxFlowValue)))
 
   // discard of old values
   // start at 10 seconds
-  if (flowTime > 1000) flowValues.shift()
+  if (flowTime > maxFlowGraphicSize) flowValues.shift()
 
   flowTime++
   chartFlow.update()
@@ -154,7 +160,7 @@ function volsUpdate () {
 
   // discard of old values
   // start at 10 seconds
-  if (volsTime > 10) {
+  if (volsTime > maxVolsGraphicSize) {
     volsValues[1].shift()
     volsValues[0].shift()
   }
@@ -188,6 +194,6 @@ window.onload = function () {
 
   // Run the updating function of the two graphcs already created
   // The refresh rate is in milliseconds
-  setInterval(flowUpdate, 10)
-  setInterval(volsUpdate, 1000)
+  setInterval(flowUpdate, flowIntervalTime)
+  setInterval(volsUpdate, volsIntervalTime)
 }
