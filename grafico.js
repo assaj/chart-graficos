@@ -158,6 +158,7 @@ function updateFlow () {
   updateGraphicValues(flowValues, minFlowValue, maxFlowValue)
   updateGraphicIndicators(flowTime, maxFlowGraphicSize, flowIndicators, flowValues)
   removeOldValues(flowTime, maxFlowGraphicSize, flowValues)
+  removeOldIndicator(flowIndicators, flowTime, maxFlowGraphicSize)
   flowTime += flowIntervalTime
   chartFlow.update()
 }
@@ -168,6 +169,7 @@ function updateVols () {
   updateGraphicIndicators(volsTime, maxVolsGraphicSize, volsIndicators, volsValues[0])
   removeOldValues(volsTime, maxVolsGraphicSize, volsValues[0])
   removeOldValues(volsTime, maxVolsGraphicSize, volsValues[1])
+  removeOldIndicator(volsIndicators, volsTime, maxVolsGraphicSize)
   volsTime += volsIntervalTime
   chartVols.update()
 }
@@ -177,11 +179,15 @@ function updateGraphicValues (values, minValue, maxValue) {
 }
 
 function updateGraphicIndicators (time, maxGraphicSize, indicators, values) {
-  if (time <= maxGraphicSize) indicators.push(secondToMillisecond(time))
+  indicators.push(secondToMillisecond(time))
 }
 
 function removeOldValues (time, maxGraphicSize, values) {
   if (time > maxGraphicSize) values.shift()
+}
+
+function removeOldIndicator (indicator, time, maxGraphicSize) {
+  if (time > maxGraphicSize) indicator.shift()
 }
 
 function randomNumber (min, max) {
