@@ -167,19 +167,46 @@ function updateFlow () {
   chartFlow.update()
 }
 
+// In this function, we gonna add two indicators and one two value.
+// the first value is the diference between the atual value and the next
 function updateVols () {
-  updateGraphicValues(volsValues[0], minVolsValue, maxVolsValue)
-  updateGraphicValues(volsValues[1], minVolsValue, maxVolsValue)
+  let diff
+  let first
+  let second
+
+  // Add the first value two times
+  first = updateGraphicValues(volsValues[0], minVolsValue, maxVolsValue)
+  diff = Math.max(first, volsValues[0][volsValues[0].length - 1]) - Math.min(first, volsValues[0][volsValues[0].length - 1])
+  diff = Math.floor(diff / 2)
+  updateGraphicValues(volsValues[0], diff,diff)
+
+  // Add the second value two times
+  second = updateGraphicValues(volsValues[1], minVolsValue, maxVolsValue)
+  diff = Math.max(second, volsValues[1][volsValues[1].length - 1]) - Math.min(second, volsValues[1][volsValues[1].length - 1])
+  diff = Math.floor(diff / 2)
+  updateGraphicValues(volsValues[1], diff,diff)
+
+  // Add new indicators
   updateGraphicIndicators(volsTime, maxVolsGraphicSize, volsIndicators, volsValues[0])
+  updateGraphicIndicators(volsTime + (volsIntervalTime / 2), maxVolsGraphicSize, volsIndicators, volsValues[0])
+
+  // Remove old Values two time
   removeOldValues(volsTime, maxVolsGraphicSize, volsValues[0])
   removeOldValues(volsTime, maxVolsGraphicSize, volsValues[1])
+  removeOldValues(volsTime, maxVolsGraphicSize, volsValues[0])
+  removeOldValues(volsTime, maxVolsGraphicSize, volsValues[1])
+
+  // Remove Indicators two times
   removeOldIndicator(volsIndicators, volsTime, maxVolsGraphicSize)
+  removeOldIndicator(volsIndicators, volsTime, maxVolsGraphicSize)
+
+  // Updating chart
   volsTime += volsIntervalTime
   chartVols.update()
 }
 
 function updateGraphicValues (values, minValue, maxValue) {
-  values.push(randomNumber(minValue, maxValue))
+  return values.push(randomNumber(minValue, maxValue))
 }
 
 function updateGraphicIndicators (time, maxGraphicSize, indicators, values) {
