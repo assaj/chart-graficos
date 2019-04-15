@@ -15,17 +15,11 @@ var volsCtx
 const volsIntervalTime = 2000
 const flowIntervalTime = 20
 const maxVolsGraphicSize = 10
-const maxFlowGraphicSize = 1000
+const maxFlowGraphicSize = 10000
 const minFlowValue = 0
 const maxFlowValue = 100
 const minVolsValue = -3
 const maxVolsValue = 3
-
-// Starting Array with Flow indicators
-for (let b = 0; b <= 1000; b++) b % 100 === 0 ? flowIndicators[b] = b / 100 : flowIndicators[b] = b
-
-// Starting Array with Vols indicators
-for (let b = 0; b <= 10; b++) volsIndicators[b] = b
 
 // Creating flow graphic configuration
 var FlowConf = {
@@ -149,28 +143,34 @@ function flowUpdate () {
 
   // discard of old values
   // start at 10 seconds
-  if (flowTime > maxFlowGraphicSize) flowValues.shift()
+  if (flowTime < maxFlowGraphicSize) {
+    flowIndicators.push(flowTime / 1000)
+  } else {
+    flowValues.shift()
+  }
 
-  flowTime++
+  flowTime += 20
   chartFlow.update()
 }
 
 function volsUpdate () {
-  // Change this.
   // adds a random number between -3 and 3
   volsValues[0].push(randomNumber(minVolsValue, maxVolsValue))
   volsValues[1].push(randomNumber(minVolsValue, maxVolsValue))
+
   // discard of old values
   // start at 10 seconds
-  if (volsTime > maxVolsGraphicSize) {
+  if (volsTime <= maxVolsGraphicSize) {
+    volsIndicators.push(volsTime)
+  } else {
     volsValues[1].shift()
     volsValues[0].shift()
   }
-  volsTime++
+  volsTime += 2
   chartVols.update()
 }
 
-function randomNumber (min, max) { // FIX IT
+function randomNumber (min, max) {
   let diff = max - min
   diff = Math.floor(Math.random() * (diff + 1))
   return min + diff
