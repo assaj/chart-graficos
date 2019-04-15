@@ -177,7 +177,7 @@ function updateGraphicValues (values, minValue, maxValue) {
 }
 
 function updateGraphicIndicators (time, maxGraphicSize, indicators, values) {
-  if (time <= maxGraphicSize) indicators.push(time / 1000)
+  if (time <= maxGraphicSize) indicators.push(secondToMillisecond(time))
 }
 
 function removeOldValues (time, maxGraphicSize, values) {
@@ -188,4 +188,8 @@ function randomNumber (min, max) {
   let diff = max - min
   diff = Math.floor(Math.random() * (diff + 1))
   return min + diff
+}
+
+function secondToMillisecond (number) {
+  return number / 1000
 }
