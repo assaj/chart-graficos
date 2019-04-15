@@ -69,6 +69,10 @@ var FlowConf = {
         scaleLabel: {
           display: true,
           labelString: 'Tempo(s)'
+        },
+        ticks: {
+          autoSkip: true,
+          maxTicksLimit: 10
         }
       }]
     }
