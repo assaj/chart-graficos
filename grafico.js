@@ -14,7 +14,7 @@ var volsCtx
 
 const volsIntervalTime = 2000
 const flowIntervalTime = 10
-const maxVolsGraphicSize = 10
+const maxVolsGraphicSize = 10000
 const maxFlowGraphicSize = 10000
 const minFlowValue = 0
 const maxFlowValue = 100
@@ -161,12 +161,12 @@ function volsUpdate () {
   // discard of old values
   // start at 10 seconds
   if (volsTime <= maxVolsGraphicSize) {
-    volsIndicators.push(volsTime)
+    volsIndicators.push(volsTime / 1000)
   } else {
     volsValues[1].shift()
     volsValues[0].shift()
   }
-  volsTime += 2
+  volsTime += volsIntervalTime
   chartVols.update()
 }
 
