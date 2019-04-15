@@ -12,7 +12,7 @@ var chartVols
 var volsTime = 0
 var volsCtx
 
-const volsIntervalTime = 1000
+const volsIntervalTime = 2000
 const flowIntervalTime = 20
 const maxVolsGraphicSize = 10
 const maxFlowGraphicSize = 1000
