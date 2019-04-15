@@ -137,45 +137,7 @@ var volsConf = {
   }
 }
 
-function flowUpdate () {
-  // Adds a random number between 0 and 100
-  flowValues.push(randomNumber(minFlowValue, maxFlowValue))
-
-  // discard of old values
-  // start at 10 seconds
-  if (flowTime <= maxFlowGraphicSize) {
-    flowIndicators.push(flowTime / 1000)
-  } else {
-    flowValues.shift()
-  }
-
-  flowTime += flowIntervalTime
-  chartFlow.update()
-}
-
-function volsUpdate () {
-  // adds a random number between -3 and 3
-  volsValues[0].push(randomNumber(minVolsValue, maxVolsValue))
-  volsValues[1].push(randomNumber(minVolsValue, maxVolsValue))
-
-  // discard of old values
-  // start at 10 seconds
-  if (volsTime <= maxVolsGraphicSize) {
-    volsIndicators.push(volsTime / 1000)
-  } else {
-    volsValues[1].shift()
-    volsValues[0].shift()
-  }
-  volsTime += volsIntervalTime
-  chartVols.update()
-}
-
-function randomNumber (min, max) {
-  let diff = max - min
-  diff = Math.floor(Math.random() * (diff + 1))
-  return min + diff
-}
-
+// Function that runs when the pages opens
 window.onload = function () {
   // catch tag "canvas" of html file, by ID.
   flowCtx = document.getElementById('flowChart')
@@ -188,6 +150,42 @@ window.onload = function () {
 
   // Run the updating function of the two graphcs already created
   // The refresh rate is in milliseconds
-  setInterval(flowUpdate, flowIntervalTime)
-  setInterval(volsUpdate, volsIntervalTime)
+  setInterval(updateFlow, flowIntervalTime)
+  setInterval(updateVols, volsIntervalTime)
+}
+
+function updateFlow () {
+  updateGraphicValues(flowValues, minFlowValue, maxFlowValue)
+  updateGraphicIndicators(flowTime, maxFlowGraphicSize, flowIndicators, flowValues)
+  removeOldValues(flowTime, maxFlowGraphicSize, flowValues)
+  flowTime += flowIntervalTime
+  chartFlow.update()
+}
+
+function updateVols () {
+  updateGraphicValues(volsValues[0], minVolsValue, maxVolsValue)
+  updateGraphicValues(volsValues[1], minVolsValue, maxVolsValue)
+  updateGraphicIndicators(volsTime, maxVolsGraphicSize, volsIndicators, volsValues[0])
+  removeOldValues(volsTime, maxVolsGraphicSize, volsValues[0])
+  removeOldValues(volsTime, maxVolsGraphicSize, volsValues[1])
+  volsTime += volsIntervalTime
+  chartVols.update()
+}
+
+function updateGraphicValues (values, minValue, maxValue) {
+  values.push(randomNumber(minValue, maxValue))
+}
+
+function updateGraphicIndicators (time, maxGraphicSize, indicators, values) {
+  if (time <= maxGraphicSize) indicators.push(time / 1000)
+}
+
+function removeOldValues (time, maxGraphicSize, values) {
+  if (time > maxGraphicSize) values.shift()
+}
+
+function randomNumber (min, max) {
+  let diff = max - min
+  diff = Math.floor(Math.random() * (diff + 1))
+  return min + diff
 }
