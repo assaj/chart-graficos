@@ -16,7 +16,10 @@ const volsIntervalTime = 2000
 const flowIntervalTime = 20
 const maxVolsGraphicSize = 10
 const maxFlowGraphicSize = 1000
+const minFlowValue = 0
 const maxFlowValue = 100
+const minVolsValue = -3
+const maxVolsValue = 3
 
 // Starting Array with Flow indicators
 for (let b = 0; b <= 1000; b++) b % 100 === 0 ? flowIndicators[b] = b / 100 : flowIndicators[b] = b
@@ -64,8 +67,8 @@ var FlowConf = {
           labelString: 'ValoresFluxo Randomicos'
         },
         ticks: {
-          min: 0,
-          max: 100
+          min: minFlowValue,
+          max: maxFlowValue
         }
       }],
       xAxes: [{
@@ -126,8 +129,8 @@ var volsConf = {
           labelString: 'valoresVols Randomicos'
         },
         ticks: {
-          min: -3,
-          max: 3
+          min: minVolsValue,
+          max: maxVolsValue
         }
       }],
       xAxes: [{
