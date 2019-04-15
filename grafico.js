@@ -145,7 +145,7 @@ var volsConf = {
 
 function flowUpdate () {
   // Adds a random number between 0 and 100
-  flowValues.push(Math.floor((Math.random() * maxFlowValue)))
+  flowValues.push(randomNumber(minFlowValue, maxFlowValue))
 
   // discard of old values
   // start at 10 seconds
@@ -158,9 +158,8 @@ function flowUpdate () {
 function volsUpdate () {
   // Change this.
   // adds a random number between -3 and 3
-  Math.floor((Math.random() * 2) + 1) === 2 ? volsValues[0].push(Math.floor((Math.random() * 4))) : volsValues[0].push(Math.floor((Math.random() * 3) * (-1)))
-  Math.floor((Math.random() * 2) + 1) === 2 ? volsValues[1].push(Math.floor((Math.random() * 4))) : volsValues[1].push(Math.floor((Math.random() * 3) * (-1)))
-
+  volsValues[0].push(randomNumber(minVolsValue))
+  volsValues[1].push(randomNumber(maxVolsValue))
   // discard of old values
   // start at 10 seconds
   if (volsTime > maxVolsGraphicSize) {
@@ -171,19 +170,11 @@ function volsUpdate () {
   chartVols.update()
 }
 
-/*
 function randomNumber (min, max) { // FIX IT
-  let x
-  if (min < 0) {
-    let sum = (min * (-1)) + max
-    sum -= Math.floor((Math.random() * sum + 1))
-    sum > 0 ? x = Math.floor((Math.random() * max + 1)) : x = Math.floor((Math.random() * ((min) * (-1))))
-  } else {
-    x = Math.floor((Math.random() * max) + min)
-  }
-  return x
+  let diff = max - min
+  diff = Math.floor(Math.random() * (diff + 1))
+  return min + diff
 }
-*/
 
 window.onload = function () {
   // catch tag "canvas" of html file, by ID.
