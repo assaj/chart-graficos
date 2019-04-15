@@ -158,8 +158,8 @@ function flowUpdate () {
 function volsUpdate () {
   // Change this.
   // adds a random number between -3 and 3
-  volsValues[0].push(randomNumber(minVolsValue))
-  volsValues[1].push(randomNumber(maxVolsValue))
+  volsValues[0].push(randomNumber(minVolsValue, maxVolsValue))
+  volsValues[1].push(randomNumber(minVolsValue, maxVolsValue))
   // discard of old values
   // start at 10 seconds
   if (volsTime > maxVolsGraphicSize) {
