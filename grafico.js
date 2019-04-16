@@ -158,8 +158,9 @@ window.onload = function () {
   setInterval(updateVols, volsIntervalTime)
 }
 
+// this function follow exactly the normal update path
 function updateFlow () {
-  updateGraphicValues(flowValues, minFlowValue, maxFlowValue)
+  updateGraphicValues(flowValues, randomNumber(minFlowValue, maxFlowValue))
   updateGraphicIndicators(flowTime, maxFlowGraphicSize, flowIndicators, flowValues)
   removeOldValues(flowTime, maxFlowGraphicSize, flowValues)
   removeOldIndicator(flowIndicators, flowTime, maxFlowGraphicSize)
@@ -171,42 +172,56 @@ function updateFlow () {
 // the first value is the diference between the atual value and the next
 function updateVols () {
   let diff
-  let first
-  let second
+  let random
 
-  // Add the first value two times
-  first = updateGraphicValues(volsValues[0], minVolsValue, maxVolsValue)
-  diff = Math.max(first, volsValues[0][volsValues[0].length - 1]) - Math.min(first, volsValues[0][volsValues[0].length - 1])
-  diff = Math.floor(diff / 2)
-  updateGraphicValues(volsValues[0], diff,diff)
+  // In the first iteration, add a value and a indicator only one time
+  if (typeof volsValues[0][0] !== 'number') {
+    updateGraphicValues(volsValues[0], minVolsValue, maxVolsValue)
+    updateGraphicValues(volsValues[1], minVolsValue, maxVolsValue)
+    updateGraphicIndicators(volsTime, maxVolsGraphicSize, volsIndicators, volsValues[0])
+  } else {
+    // Add the first value two times
+    random = randomNumber(minVolsValue, maxVolsValue)
+    diff = Math.max(random, volsValues[0][volsValues[0].length - 1]) - Math.min(random, volsValues[0][volsValues[0].length - 1])
+    diff = Math.floor(diff / 2)
 
-  // Add the second value two times
-  second = updateGraphicValues(volsValues[1], minVolsValue, maxVolsValue)
-  diff = Math.max(second, volsValues[1][volsValues[1].length - 1]) - Math.min(second, volsValues[1][volsValues[1].length - 1])
-  diff = Math.floor(diff / 2)
-  updateGraphicValues(volsValues[1], diff,diff)
+    // addes the current value and your intermediate
+    updateGraphicValues(volsValues[0], diff)
+    updateGraphicValues(volsValues[0], random)
 
-  // Add new indicators
-  updateGraphicIndicators(volsTime, maxVolsGraphicSize, volsIndicators, volsValues[0])
-  updateGraphicIndicators(volsTime + (volsIntervalTime / 2), maxVolsGraphicSize, volsIndicators, volsValues[0])
+    // Add the second value two times
+    random = randomNumber(minVolsValue, maxVolsValue)
+    diff = Math.max(random, volsValues[1][volsValues[1].length - 1]) - Math.min(random, volsValues[1][volsValues[1].length - 1])
+    diff = Math.floor(diff / 2)
 
-  // Remove old Values two time
-  removeOldValues(volsTime, maxVolsGraphicSize, volsValues[0])
-  removeOldValues(volsTime, maxVolsGraphicSize, volsValues[1])
-  removeOldValues(volsTime, maxVolsGraphicSize, volsValues[0])
-  removeOldValues(volsTime, maxVolsGraphicSize, volsValues[1])
+    // addes the current value and your intermediate
+    updateGraphicValues(volsValues[1], diff)
+    updateGraphicValues(volsValues[1], random)
 
-  // Remove Indicators two times
-  removeOldIndicator(volsIndicators, volsTime, maxVolsGraphicSize)
-  removeOldIndicator(volsIndicators, volsTime, maxVolsGraphicSize)
+    // Add new indicators
+    updateGraphicIndicators(volsTime, maxVolsGraphicSize, volsIndicators, volsValues[0])
+    updateGraphicIndicators(volsTime + (volsIntervalTime / 2), maxVolsGraphicSize, volsIndicators, volsValues[0])
 
-  // Updating chart
+    // Remove old Values two time
+    // Old values from first serie
+    removeOldValues(volsTime, maxVolsGraphicSize, volsValues[0])
+    removeOldValues(volsTime, maxVolsGraphicSize, volsValues[0])
+
+    // Old values from second serie
+    removeOldValues(volsTime, maxVolsGraphicSize, volsValues[1])
+    removeOldValues(volsTime, maxVolsGraphicSize, volsValues[1])
+
+    // Remove Indicators two times
+    removeOldIndicator(volsIndicators, volsTime, maxVolsGraphicSize)
+    removeOldIndicator(volsIndicators, volsTime, maxVolsGraphicSize)
+  }
+  // Updating chart and graphic time
   volsTime += volsIntervalTime
   chartVols.update()
 }
 
-function updateGraphicValues (values, minValue, maxValue) {
-  return values.push(randomNumber(minValue, maxValue))
+function updateGraphicValues (values, value) {
+  values.push(value)
 }
 
 function updateGraphicIndicators (time, maxGraphicSize, indicators, values) {
