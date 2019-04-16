@@ -161,7 +161,7 @@ window.onload = function () {
 // this function follow exactly the normal update path
 function updateFlow () {
   updateGraphicValues(flowValues, randomNumber(minFlowValue, maxFlowValue))
-  updateGraphicIndicators(flowTime, maxFlowGraphicSize, flowIndicators, flowValues)
+  updateGraphicIndicators(flowTime, flowIndicators)
   removeOldValues(flowTime, maxFlowGraphicSize, flowValues)
   removeOldIndicator(flowIndicators, flowTime, maxFlowGraphicSize)
   flowTime += flowIntervalTime
@@ -178,7 +178,7 @@ function updateVols () {
   if (typeof volsValues[0][0] !== 'number') {
     updateGraphicValues(volsValues[0], minVolsValue, maxVolsValue)
     updateGraphicValues(volsValues[1], minVolsValue, maxVolsValue)
-    updateGraphicIndicators(volsTime, maxVolsGraphicSize, volsIndicators, volsValues[0])
+    updateGraphicIndicators(volsTime, volsIndicators)
   } else {
     // Add the first value two times
     random = randomNumber(minVolsValue, maxVolsValue)
@@ -199,8 +199,8 @@ function updateVols () {
     updateGraphicValues(volsValues[1], random)
 
     // Add new indicators
-    updateGraphicIndicators(volsTime, maxVolsGraphicSize, volsIndicators, volsValues[0])
-    updateGraphicIndicators(volsTime + (volsIntervalTime / 2), maxVolsGraphicSize, volsIndicators, volsValues[0])
+    updateGraphicIndicators(volsTime, volsIndicators)
+    updateGraphicIndicators(volsTime + (volsIntervalTime / 2), volsIndicators)
 
     // Remove old Values two time
     // Old values from first serie
@@ -224,7 +224,7 @@ function updateGraphicValues (values, value) {
   values.push(value)
 }
 
-function updateGraphicIndicators (time, maxGraphicSize, indicators, values) {
+function updateGraphicIndicators (time, indicators) {
   indicators.push(secondToMillisecond(time))
 }
 
